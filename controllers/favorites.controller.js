@@ -2,21 +2,31 @@ const Favorite = require('../models/Favorite.model')
 
 
 module.exports.favoritesController = {
-    getFavorites: (req, res) => {
-        Favorite.find(req.query.user ? { user: req.query.user } : {'': ''}).populate('post')
-            .then(data => res.json(data))
-            .catch(() => res.json({"error": "Не удалось получить записи"}))
+    getFavorites: async function(req, res) {
+        try {
+            let data = await Favorite.find(req.query.user ? { user: req.query.user } : {'': ''}).populate('post')
+            res.json(data)
+        } catch (err) {
+            res.json({"error": "Не удалось получить записи"})
+        }
     },
-    postFavorite: (req, res) => {
-        Favorite.create({
-            post: req.body.post,
-            user: req.body.user
-        }).then(() => res.json('Record created'))
-            .catch(() => res.json({ "error": "Ошибка при добавлении записи" }))
+    postFavorite: async function(req, res) {
+        try {
+            await Favorite.create({
+                post: req.body.post,
+                user: req.body.user
+            })
+            res.json('Record created')
+        } catch (err) {
+            res.json({"error": "Ошибка при добавлении записи"})
+        }
     },
-    deleteFavorite: (req, res) => {
-        Favorite.findByIdAndDelete(req.params.id).then(() => {
-            res.json(`Record has been deleted`)
-        }).catch(() => res.json({ "error": "Ошибка при удалении записи" }))
+    deleteFavorite: async function(req, res) {
+        try {
+            await Favorite.findByIdAndDelete(req.params.id)
+            res.json('Record has been deleted')
+        } catch (err) {
+            res.json({"error": "Ошибка при удалении записи"})
+        }
     }
 }

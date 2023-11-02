@@ -9,10 +9,16 @@ app.use(require('./routes/posts.route'))
 app.use(require('./routes/comments.route'))
 app.use(require('./routes/favorites.route'))
 
-mongoose.connect("mongodb+srv://32av32:AV123580xx@cluster0.7fiabdg.mongodb.net/twitter?retryWrites=true&w=majority", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-}).then(() => console.log('Успешно соединились с сервером MongoDB'))
-    .catch(() => console.log('Ошибка при соединении с сервером MongoDB'))
 
+async function connectToMongoose(url) {
+    try{
+        await mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true})
+        console.log('Успешно соединились с сервером MongoDB')
+    } catch (err) {
+        console.log(`Ошибка при соединении с сервером MongoDB. Message: ${err.message}`)
+    }
+
+}
+
+connectToMongoose('mongodb+srv://32av32:AV123580xx@cluster0.7fiabdg.mongodb.net/twitter?retryWrites=true&w=majority')
 app.listen(4000)
