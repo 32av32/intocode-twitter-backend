@@ -3,7 +3,7 @@ const Favorite = require('../models/Favorite.model')
 
 module.exports.favoritesController = {
     getFavorites: (req, res) => {
-        Favorite.find(req.query.user ? { post: req.query.user } : {'': ''}).populate('user')
+        Favorite.find(req.query.user ? { user: req.query.user } : {'': ''}).populate('post')
             .then(data => res.json(data))
             .catch(() => res.json({"error": "Не удалось получить записи"}))
     },

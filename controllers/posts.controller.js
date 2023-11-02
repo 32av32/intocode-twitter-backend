@@ -7,7 +7,7 @@ module.exports.postsController = {
             .catch(() => res.json({"error": "Не удалось получить запись"}))
     },
     getPosts: (req, res) => {
-        Post.find(req.query.user ? { post: req.query.user } : null).populate('user')
+        Post.find(req.query.user ? { user: req.query.user } : null).populate('user')
             .then(data => res.json(data))
             .catch(() => res.json({"error": "Не удалось получить записи"}))
     },
